@@ -3,8 +3,10 @@ import matplotlib.pyplot as plt
 import csv
 
 class ArduinoVISADevice:
-    def __init__():
-        
+   
+    def __init__(self):
+        port = "ASRL3::INSTR"
+        device = ArduinoVISADevice(port=port)
 
 
 rm = pyvisa.ResourceManager("@py")
