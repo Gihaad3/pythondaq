@@ -2,6 +2,10 @@ import pyvisa
 import matplotlib.pyplot as plt
 import csv
 
+class ArduinoVISADevice:
+
+
+
 rm = pyvisa.ResourceManager("@py")
 ports = rm.list_resources()
 device = rm.open_resource(
@@ -27,4 +31,4 @@ with open('metingen.csv', 'w', newline='') as csvfile:
      writer = csv.writer(csvfile)
      writer.writerow(['U', 'I'])
      for a, b in zip(U_LED, I_LED):
-        writer.writerow([a, b]) 
+        writer.writerow([a, b])
