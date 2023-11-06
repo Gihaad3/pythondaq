@@ -1,4 +1,6 @@
 import pyvisa
+import matplotlib.pyplot as plt
+
 
 rm = pyvisa.ResourceManager("@py")
 ports = rm.list_resources()
