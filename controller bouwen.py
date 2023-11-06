@@ -2,28 +2,18 @@ import pyvisa
 import matplotlib.pyplot as plt
 import csv
 
+
+
 class ArduinoVISADevice:
    
     def __init__(self):
-        port = "ASRL3::INSTR"
-        device = ArduinoVISADevice(port=port)
+        rm = pyvisa.ResourceManager("@py")
+        device = rm.open_resource(
+            "ASRL9::INSTR", read_termination="\r\n", write_termination="\n"\
+        )
 
 
     def get_identification(self):
-        
-
-
-    def set_output_value(self, value=512):
-        
-
-    def get_output_value(self):
-        
-    
-    def get_input_value(self, channel=2):
-        
-    def get_input_voltage(self, channel=2):
-        
-        
 
 rm = pyvisa.ResourceManager("@py")
 ports = rm.list_resources()
