@@ -16,6 +16,9 @@ class ArduinoVISADevice:
 
     def ch0_value(self):
         ch0_value = device.get_output_value()
+    
+    def ch2_value(self):
+        ch2_value = device.get_input_value(channel=2)
 
 rm = pyvisa.ResourceManager("@py")
 ports = rm.list_resources()
