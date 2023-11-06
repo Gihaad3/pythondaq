@@ -12,3 +12,4 @@ device = rm.open_resource(
 for x in range(0, 1024):
      device.query(f"OUT:CH0 {x}")
      R = int(device.query("MEAS: CH2?"))
+     V = 3.3/1023 * R
