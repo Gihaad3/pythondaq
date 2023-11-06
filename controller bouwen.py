@@ -25,6 +25,12 @@ class ArduinoVISADevice:
     def get_input_value(self, channel=2):
         return self.device.query(f"MEAS:CH{channel}")
 
+
+    def get_input_voltage(self, channel=2):
+        V= 3.3/1023 * int(self.device.query(f"MEAS:CH{channel}"))
+        return V
+
+
 rm = pyvisa.ResourceManager("@py")
 ports = rm.list_resources()
 device = rm.open_resource(
