@@ -22,6 +22,9 @@ class ArduinoVISADevice:
     def get_output_value(self):
         return self.device.query(f"MEAS:CH1")
 
+    def get_input_value(self, channel=2):
+        return self.device.query(f"MEAS:CH{channel}")
+
 rm = pyvisa.ResourceManager("@py")
 ports = rm.list_resources()
 device = rm.open_resource(
