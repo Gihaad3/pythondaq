@@ -3,7 +3,8 @@ import matplotlib.pyplot as plt
 import csv
 
 class ArduinoVISADevice:
-
+    def __init__():
+        
 
 
 rm = pyvisa.ResourceManager("@py")
