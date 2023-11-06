@@ -8,6 +8,8 @@ class ArduinoVISADevice:
         port = "ASRL3::INSTR"
         device = ArduinoVISADevice(port=port)
 
+    def identificatiestring(self):
+        print(device.get_identification())
 
 rm = pyvisa.ResourceManager("@py")
 ports = rm.list_resources()
