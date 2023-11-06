@@ -30,6 +30,8 @@ class ArduinoVISADevice:
         V= 3.3/1023 * int(self.device.query(f"MEAS:CH{channel}"))
         return V
 
+port = "ASRL9::INSTR"
+device = ArduinoVISADevice(port=port)
 
 rm = pyvisa.ResourceManager("@py")
 ports = rm.list_resources()
