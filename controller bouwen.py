@@ -33,6 +33,14 @@ class ArduinoVISADevice:
 port = "ASRL9::INSTR"
 device = ArduinoVISADevice(port=port)
 
+
+
+# Bij set_output_value zetten we een spanning over het circuit.
+# Bij get_output_value return je de spaniong over het circuit.
+
+
+
+
 rm = pyvisa.ResourceManager("@py")
 ports = rm.list_resources()
 device = rm.open_resource(
