@@ -13,3 +13,4 @@ for x in range(0, 1024):
      device.query(f"OUT:CH0 {x}")
      U_2 = int(device.query("MEAS: CH2?"))
      V = 3.3/1023 * U_2
+     U_tot = int(device.query("MEAS: CH1?"))
