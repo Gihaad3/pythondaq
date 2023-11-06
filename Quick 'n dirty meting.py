@@ -19,3 +19,6 @@ for x in range (0, 1024):
     I = int(U_1) / 220
     I_LED.append(I)
 device.query("OUT:CH0 0")
+
+plt.plot(U_LED, I_LED)
+plt.show()
