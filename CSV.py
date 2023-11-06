@@ -24,3 +24,5 @@ plt.plot(U_LED, I_LED)
 plt.show()
 
 with open('metingen.csv', 'w', newline='') as csvfile:
+     writer = csv.writer(csvfile)
+     writer.writerow(['U', 'I'])
