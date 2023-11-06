@@ -11,6 +11,9 @@ class ArduinoVISADevice:
     def identificatiestring(self):
         print(device.get_identification())
 
+    def setvalue(self, value):
+        device.set_output_value(value=512)
+
 rm = pyvisa.ResourceManager("@py")
 ports = rm.list_resources()
 device = rm.open_resource(
