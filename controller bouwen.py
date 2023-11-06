@@ -14,6 +14,9 @@ class ArduinoVISADevice:
     def setvalue(self, value):
         device.set_output_value(value=512)
 
+    def ch0_value(self):
+        ch0_value = device.get_output_value()
+
 rm = pyvisa.ResourceManager("@py")
 ports = rm.list_resources()
 device = rm.open_resource(
