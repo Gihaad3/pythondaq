@@ -8,17 +8,22 @@ class ArduinoVISADevice:
         port = "ASRL3::INSTR"
         device = ArduinoVISADevice(port=port)
 
-    def identificatiestring(self):
-        print(device.get_identification())
 
-    def setvalue(self, value):
-        device.set_output_value(value=512)
+    def get_identification(self):
+        
 
-    def ch0_value(self):
-        ch0_value = device.get_output_value()
+
+    def set_output_value(self, value=512):
+        
+
+    def get_output_value(self):
+        
     
-    def ch2_value(self):
-        ch2_value = device.get_input_value(channel=2)
+    def get_input_value(self, channel=2):
+        
+    def get_input_voltage(self, channel=2):
+        
+        
 
 rm = pyvisa.ResourceManager("@py")
 ports = rm.list_resources()
