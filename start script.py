@@ -9,3 +9,6 @@ device = rm.open_resource(
 
 for x in range(0, 1024):
      device.query(f"OUT:CH0 {x}")
+
+# Met CH1 meet je de spanning over de LED en de weerstand
+# Met CH2 meet je spanning over de weerstand
