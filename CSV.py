@@ -1,6 +1,6 @@
 import pyvisa
 import matplotlib.pyplot as plt
-
+import csv
 
 rm = pyvisa.ResourceManager("@py")
 ports = rm.list_resources()
@@ -22,3 +22,5 @@ device.query("OUT:CH0 0")
 
 plt.plot(U_LED, I_LED)
 plt.show()
+
+with open('metingen.csv', 'w', newline='') as csvfile:
