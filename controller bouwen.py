@@ -14,7 +14,7 @@ class ArduinoVISADevice():
     def get_identification(self):
         return self.device.query("*IDN?")
         
-    def set_output_value(self, value=512):
+    def set_output_value(self, value):
         self.device.query(f"OUT:CH0 {value}")
 
     def get_output_value(self):
@@ -25,7 +25,7 @@ class ArduinoVISADevice():
 
 
     def get_input_voltage(self, channel=2):
-        V= 3.3/1023 * int(self.device.query(f"MEAS:CH{channel}"))
+        V= 3.3/1023 * int(self.device.query(f"MEAS:CH{channel}?"))
         return V
 
 port = "ASRL9::INSTR"
@@ -34,7 +34,6 @@ device = ArduinoVISADevice(port=port)
 
 # Bij set_output_value zetten we een spanning over het circuit.
 # Bij get_output_value return je de spaniong over het circuit.
-
 
 
 rm = pyvisa.ResourceManager("@py")
