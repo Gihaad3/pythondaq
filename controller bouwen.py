@@ -13,7 +13,8 @@ with open('metingen.csv', 'w', newline='') as csvfile:
 
 class DiodeExperiment():
     def __init__(self):
-        from arduino_device import ArduinoVISADevice, list_devices
+        from arduino_device import ArduinoVISADevice
+        from arduino_device import list_devices
         port = "ASRL9::INSTR"
         self.device = ArduinoVISADevice(port=port)
     def scan(self):
