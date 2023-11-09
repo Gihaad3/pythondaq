@@ -8,9 +8,6 @@ class ArduinoVISADevice():
             "ASRL9::INSTR", read_termination="\r\n", write_termination="\n"\
         )
 
-        self.U_LED = []
-        self.I_LED = []
-
     def get_identification(self):
         return self.device.query("*IDN?")
         
@@ -32,4 +29,3 @@ class ArduinoVISADevice():
 def list_devices():
     rm = pyvisa.ResourceManager("@py")
     return rm.list_resources()
-
