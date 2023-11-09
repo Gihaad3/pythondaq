@@ -18,7 +18,7 @@ class ArduinoVISADevice():
         self.device.query(f"OUT:CH0 {value}")
 
     def get_output_value(self):
-        return self.device.query(f"MEAS:CH1")
+        return self.device.query(f"MEAS:CH1?")
 
     def get_input_value(self, channel=2):
         return self.device.query(f"MEAS:CH{channel}")
