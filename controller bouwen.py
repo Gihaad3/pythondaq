@@ -1,8 +1,6 @@
 import matplotlib.pyplot as plt
 import csv
 from diode_experiment import DiodeExperiment
-# Bij set_output_value zetten we een spanning over het circuit.
-# Bij get_output_value return je de spaniong over het circuit.
 
 model=DiodeExperiment()
 data = model.scan(100, 1000)
