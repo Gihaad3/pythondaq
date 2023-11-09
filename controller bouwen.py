@@ -35,6 +35,9 @@ device = ArduinoVISADevice(port=port)
 # Bij set_output_value zetten we een spanning over het circuit.
 # Bij get_output_value return je de spaniong over het circuit.
 
+def list_devices():
+    rm = pyvisa.ResourceManager("@py")
+    return rm.list_resources()
 
 rm = pyvisa.ResourceManager("@py")
 ports = rm.list_resources()
