@@ -1,33 +1,14 @@
-import pyvisa
 import matplotlib.pyplot as plt
 import csv
-
+from diode_experiment import DiodeExperiment
 # Bij set_output_value zetten we een spanning over het circuit.
 # Bij get_output_value return je de spaniong over het circuit.
 
-# with open('metingen.csv', 'w', newline='') as csvfile:
-#      writer = csv.writer(csvfile)
-#      writer.writerow(['U', 'I'])
-#      for a, b in zip(device.U_LED, device.I_LED):
-#         writer.writerow([a, b])
-
-class DiodeExperiment():
-    def __init__(self):
-        from arduino_device import ArduinoVISADevice
-        from arduino_device import list_devices
-        port = "ASRL9::INSTR"
-        self.device = ArduinoVISADevice(port=port)
-    def scan(self, min, max):
-        for value in range(min, max):
-            self.device.set_output_value(value)
-            U_tot = self.device.get_output_value() 
-            U_2 = self.device.get_input_value(channel = 2) 
-            U_1 = int(U_tot) - int(U_2)
-            self.device.U_LED.append(U_1)
-            I = int(U_1) / 220
-            self.device.I_LED.append(I)
-        self.device.set_output_value(0)
-        return self.device.U_LED, self.device.I_LED
+with open('metingen.csv', 'w', newline='') as csvfile:
+     writer = csv.writer(csvfile)
+     writer.writerow(['U', 'I'])
+     for a, b in zip(device.U_LED, device.I_LED):
+        writer.writerow([a, b])
 
 model=DiodeExperiment()
 data = model.scan(100, 1000)
