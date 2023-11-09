@@ -3,15 +3,13 @@ import matplotlib.pyplot as plt
 import csv
 
 
-
-class ArduinoVISADevice:
+class ArduinoVISADevice():
    
-    def __init__(self):
+    def __init__(self, port):
         rm = pyvisa.ResourceManager("@py")
-        device = rm.open_resource(
+        self.device = rm.open_resource(
             "ASRL9::INSTR", read_termination="\r\n", write_termination="\n"\
         )
-
 
     def get_identification(self):
         return self.device.query("*IDN?")
@@ -32,7 +30,6 @@ class ArduinoVISADevice:
 
 port = "ASRL9::INSTR"
 device = ArduinoVISADevice(port=port)
-
 
 
 # Bij set_output_value zetten we een spanning over het circuit.
