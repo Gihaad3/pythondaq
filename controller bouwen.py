@@ -20,8 +20,8 @@ class ArduinoVISADevice():
     def get_output_value(self):
         return self.device.query(f"MEAS:CH1?")
 
-    def get_input_value(self, channel=2):
-        return self.device.query(f"MEAS:CH{channel}")
+    def get_input_value(self, channel):
+        return self.device.query(f"MEAS:CH{channel}?")
 
 
     def get_input_voltage(self, channel=2):
@@ -34,7 +34,6 @@ device = ArduinoVISADevice(port=port)
 
 # Bij set_output_value zetten we een spanning over het circuit.
 # Bij get_output_value return je de spaniong over het circuit.
-
 
 
 
