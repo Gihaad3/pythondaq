@@ -14,7 +14,7 @@ class ArduinoVISADevice:
 
 
     def get_identification(self):
-
+        return self.device.query("*IDN?")
         
     def set_output_value(self, value=512):
         self.device.query(f"OUT:CH0 {value}")
