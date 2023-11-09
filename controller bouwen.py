@@ -2,7 +2,6 @@ import pyvisa
 import matplotlib.pyplot as plt
 import csv
 
-
 class ArduinoVISADevice():
    
     def __init__(self, port):
@@ -10,6 +9,9 @@ class ArduinoVISADevice():
         self.device = rm.open_resource(
             "ASRL9::INSTR", read_termination="\r\n", write_termination="\n"\
         )
+
+        self.U_LED = []
+        self.I_LED = []
 
     def get_identification(self):
         return self.device.query("*IDN?")
@@ -31,7 +33,6 @@ class ArduinoVISADevice():
 port = "ASRL9::INSTR"
 device = ArduinoVISADevice(port=port)
 
-
 # Bij set_output_value zetten we een spanning over het circuit.
 # Bij get_output_value return je de spaniong over het circuit.
 
@@ -39,29 +40,22 @@ def list_devices():
     rm = pyvisa.ResourceManager("@py")
     return rm.list_resources()
 
-rm = pyvisa.ResourceManager("@py")
-ports = rm.list_resources()
-device = rm.open_resource(
-    "ASRL9::INSTR", read_termination="\r\n", write_termination="\n"
-)
 
-U_LED = []
-I_LED = []
 for x in range (0, 1024):
-    device.query(f"OUT:CH0 {x}")
-    U_tot = device.query("MEAS:CH1?") 
-    U_2 = device.query("MEAS:CH2?") 
+    device.set_output_value(x)
+    U_tot = device.get_output_value() 
+    U_2 = device.get_input_value(channel = 2) 
     U_1 = int(U_tot) - int(U_2)
-    U_LED.append(U_1)
+    device.U_LED.append(U_1)
     I = int(U_1) / 220
-    I_LED.append(I)
-device.query("OUT:CH0 0")
+    device.I_LED.append(I)
+device.set_output_value(0)
 
-plt.plot(U_LED, I_LED)
+plt.plot(device.U_LED, device.I_LED)
 plt.show()
 
 with open('metingen.csv', 'w', newline='') as csvfile:
      writer = csv.writer(csvfile)
      writer.writerow(['U', 'I'])
-     for a, b in zip(U_LED, I_LED):
+     for a, b in zip(device.U_LED, device.I_LED):
         writer.writerow([a, b])
