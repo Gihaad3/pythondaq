@@ -18,7 +18,7 @@ class DiodeExperiment():
             U_2 = self.device.get_input_value(channel = 2) 
             U_1 = int(U_tot) - int(U_2)
             self.U_LED.append(U_1)
-            I = int(U_1) / 220
+            I = int(U_2) / 220
             self.I_LED.append(I)
         self.device.set_output_value(0)
         return self.U_LED, self.I_LED
