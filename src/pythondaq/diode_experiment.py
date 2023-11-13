@@ -1,7 +1,7 @@
 import numpy as np
 import statistics
-from arduino_device import ArduinoVISADevice
-from arduino_device import list_devices
+from pythondaq.arduino_device import ArduinoVISADevice
+from pythondaq.arduino_device import list_devices
 from statistics import mean
 
 class DiodeExperiment():

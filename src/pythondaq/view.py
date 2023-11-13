@@ -1,20 +1,24 @@
 import matplotlib.pyplot as plt
 import csv
-from diode_experiment import DiodeExperiment
+from pythondaq.diode_experiment import DiodeExperiment
 from statistics import mean
 import numpy as np
 
-model=DiodeExperiment()
-data = model.scan(100, 1000)
-U = data[0]
-I = data[1]
 
 
-plt.scatter(U, I)
-plt.show()
+def view():
+   model=DiodeExperiment()
+   data = model.scan(100, 1000)
+   U = data[0]
+   I = data[1]
 
-with open('metingen.csv', 'w', newline='') as csvfile:
-     writer = csv.writer(csvfile)
-     writer.writerow(['U', 'I'])
-     for a, b in zip(data[0], data[1]):
-        writer.writerow([a, b])
+
+   plt.scatter(U, I)
+   plt.show()
+
+   with open('metingen.csv', 'w', newline='') as csvfile:
+      writer = csv.writer(csvfile)
+      writer.writerow(['U', 'I'])
+      for a, b in zip(data[0], data[1]):
+         writer.writerow([a, b])
+   return  plt.show()
