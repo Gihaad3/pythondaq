@@ -7,7 +7,7 @@ data = model.scan(100, 1000)
 U = data[0]
 I = data[1]
 
-plt.plot(U, I)
+plt.scatter(U, I)
 plt.show()
 
 with open('metingen.csv', 'w', newline='') as csvfile:
