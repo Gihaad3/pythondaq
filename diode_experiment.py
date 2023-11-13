@@ -1,10 +1,10 @@
 import numpy as np
 import statistics
+from arduino_device import ArduinoVISADevice
+from arduino_device import list_devices
 
 class DiodeExperiment():
     def __init__(self):
-        from arduino_device import ArduinoVISADevice
-        from arduino_device import list_devices
         port = "ASRL9::INSTR"
         self.device = ArduinoVISADevice(port=port)
         self.U_LED = []
