@@ -11,6 +11,7 @@ class DiodeExperiment():
         self.I_LED = []
         self.U_af = []
         self.I_af = []
+        self.U_I = []
     def scan(self, min, max):
         for value in range(min, max):
             self.device.set_output_value(value)
@@ -20,5 +21,6 @@ class DiodeExperiment():
             self.U_LED.append(U_1)
             I = int(U_2) / 220
             self.I_LED.append(I)
+            self.U_I.append([U_1, I])
         self.device.set_output_value(0)
-        return self.U_LED, self.I_LED
+        return self.U_LED, self.I_LED, self.U_I
