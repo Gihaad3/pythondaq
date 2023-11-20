@@ -2,15 +2,15 @@ import numpy as np
 import statistics
 from pythondaq.arduino_device import ArduinoVISADevice, list_devices
 
-"""THis class contains runs the experiment a number of times for a given voltage in units ADC
-"""
+
 class DiodeExperiment():
-
-
-    """This method opens the selects the device and srores important values
+    """This class contains runs the experiment a number of times for a given voltage in units ADC
     """
-    def __init__(self):
 
+    
+    def __init__(self):
+        """This method opens the selects the device and srores important values
+        """
         # Here the port is slected and uses the controller to open it
         port = "ASRL9::INSTR"
         self.device = ArduinoVISADevice(port=port)
@@ -25,12 +25,13 @@ class DiodeExperiment():
         self.standard_deviation_U = []
         self.average_U = []
 
-    """THis method repeats the experiment a number of times over a interval in units ADC and calculates the standard deviation and average
-
-    Returns:
-        list: The standard deviation of I, the avergae of I, The standard deviation of U, the avergae of U
-    """
+    
     def scan(self, min, max, N):
+        """THis method repeats the experiment a number of times over a interval in units ADC and calculates the standard deviation and average
+
+        Returns:
+            list: The standard deviation of I, the avergae of I, The standard deviation of U, the avergae of U
+        """
         #  I go over an intervalin units ADC
         for value in range(min, max):
 

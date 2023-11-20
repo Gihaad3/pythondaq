@@ -2,9 +2,10 @@ import matplotlib.pyplot as plt
 import csv
 from pythondaq.diode_experiment import DiodeExperiment
 
-"""Plotting the voltage and current and putting them in a csv file
-"""
+
 def view():
+   """Plotting the voltage and current and putting them in a csv file
+   """
    # I take the data out of the model
    model=DiodeExperiment()
    data = model.scan(0, 1023, 10)
