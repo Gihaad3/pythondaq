@@ -10,11 +10,11 @@ def view():
    data = model.scan(0, 1023)
    U = data[0]
    I = data[1]
-   error = model.std_calc(0, 1023)
+   # error = model.std_calc(0, 1023)
 
 	#Ik plot alles
    plt.scatter(U, I)
-   plt.errorbar(U, error[0], yerr = error[1])
+   # plt.errorbar(U, error[0], yerr = error[1])
    plt.xlabel("Spanning in Volt")
    plt.ylabel("Stroomsterkte in Ampere")
 

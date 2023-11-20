@@ -20,11 +20,11 @@ class DiodeExperiment():
     def scan(self, min, max):
         for value in range(min, max):
             self.device.set_output_value(value)
-            U_totaal = self.device.get_input_voltage(channel = 0) 
+            U_totaal = self.device.get_input_voltage(channel = 1) 
             U_weerstand = self.device.get_input_voltage(channel = 2) 
-            U_lamp = int(U_totaal) - int(U_weerstand)
+            U_lamp = U_totaal - U_weerstand
             self.U_LED.append(U_lamp)
-            I = int(U_weerstand) / 220
+            I = U_weerstand / 220
             self.I_LED.append(I)
             self.U_I.append([U_lamp, I])
         self.device.set_output_value(0)
