@@ -14,59 +14,41 @@ class DiodeExperiment():
         # Deze lijsten slaan de spanning en stroomsterkte apart en samen op
         self.U_LED = []
         self.I_LED = []
-        self.U_I = []
-        self.alle_data =[]
+
+        self.I_temp = []
+        self.standaard_deviaties_I =[]
+        self.gemidelde_I = []
+        
+        self.U_temp = []
+        self.standaard_deviaties_U = []
+        self.gemiddelde_U = []
     # Deze method voert het experiment uit
-    def scan(self, min, max):
+    def scan(self, min, max, N):
         for value in range(min, max):
             self.device.set_output_value(value)
-            U_totaal = self.device.get_input_voltage(channel = 1) 
-            U_weerstand = self.device.get_input_voltage(channel = 2) 
-            U_lamp = U_totaal - U_weerstand
-            self.U_LED.append(U_lamp)
-            I = U_weerstand / 220
-            self.I_LED.append(I)
-            self.U_I.append([U_lamp, I])
+
+            self.I_temp = []
+            self.U_temp = []
+            for herhaling in range(N):   
+                U_totaal = self.device.get_input_voltage(channel = 1) 
+                U_weerstand = self.device.get_input_voltage(channel = 2) 
+                U_LED = U_totaal - U_weerstand
+                I = U_weerstand / 220
+                self.I_temp.append(I)
+                self.U_temp.append(U_LED)
+            
+            gem_I = statistics.mean(self.I_temp)
+            std_I = np.std(self.I_temp)/(N**0.5)
+            
+            self.standaard_deviaties_I.append(std_I)
+            self.gemidelde_I.append(gem_I) 
+
+            gem_U = statistics.mean(self.U_temp)
+            std_U = np.std(self.U_temp)/(N**0.5)
+
+            self.standaard_deviaties_U.append(std_U)
+            self.gemiddelde_U.append(gem_U)
+
+
         self.device.set_output_value(0)
-        return self.U_LED, self.I_LED, self.U_I
-
-    # Deze method voert het experiment een aantal keer 
-    # uit en slaat alle data op in één lijst
-    def runexperiment(self, herhalingen, min, max):
-        self.alle_data = []
-
-	    #Ik herhaal het experiment en gebruik daarbij de nested list met U en I
-        for i in range(herhalingen):
-            experiment = DiodeExperiment.scan(self, min, max)[2]
-		   
-            #Ik ga elke waarde af in een individueel experiment en stop het in één lijst
-            for waarde in experiment:
-                self.alle_data.append(waarde)
-        return self.alle_data  
-
-    #Deze method berekent de standaard deviatie
-    def std_calc(self,min,max):
-        standaard_deviaties = []
-        gemidelde_I = []
-	
-	    #Ik ga de spannings interval af
-        for volt in range(min,max):
-
-	        # Ik zet de lijst met stroomsterktes telkens op nul
-            I_lijst = []
-		    # Ik ga elke waarde af in de complete set
-            # van de herhaalde experimenten
-            for waarde in self.alle_data:
-	        
-            # waarde is in dit geval een lijst met spanning en stroomsterkte
-		    # Ik sorteer de lijst hier, ik ga elke spanningswaarde
-            # af en zet de bijberhornde stroomsterkte in een lijst
-                if waarde[0] == volt:
-                    I_lijst.append(waarde[1])
-		    
-            # Ik bereken het gemidelde en de standaard deviatie
-            gem_I = statistics.mean(I_lijst)
-            std_I = np.std(I_lijst)
-            standaard_deviaties.append(std_I)
-            gemidelde_I.append(gem_I)
-        return gemidelde_I, standaard_deviaties
+        return self.standaard_deviaties_I, self.gemidelde_I, self.standaard_deviaties_U, self.gemiddelde_U
