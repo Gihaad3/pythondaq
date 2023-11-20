@@ -6,11 +6,12 @@ authors = ["Gihaad3 <gihaadahmed2003@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11.6"
+python = "^3.10"
 pyvisa = "^1.13.0"
 matplotlib = "^3.8.1"
 numpy = "^1.26.2"
-statistics = "^1.0.3.5"
+pyvisa-py = "^0.7.1"
+pyserial = "^3.5"
 
 
 [build-system]
@@ -18,4 +19,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-name = "pythondaq.view:view"
+view = "pythondaq.view:view"

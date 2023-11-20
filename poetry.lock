@@ -79,17 +79,6 @@ docs = ["ipython", "matplotlib", "numpydoc", "sphinx"]
 tests = ["pytest", "pytest-cov", "pytest-xdist"]
 
 [[package]]
-name = "docutils"
-version = "0.20.1"
-description = "Docutils -- Python Documentation Utilities"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "docutils-0.20.1-py3-none-any.whl", hash = "sha256:96f387a2c5562db4476f09f13bbab2192e764cac08ebbf3a34a95d9b1e4a59d6"},
-    {file = "docutils-0.20.1.tar.gz", hash = "sha256:f08a4e276c3a1583a86dce3e34aba3fe04d02bba2dd51ed16106244e8a923e3b"},
-]
-
-[[package]]
 name = "fonttools"
 version = "4.44.0"
 description = "Tools to manipulate font files"
@@ -453,6 +442,20 @@ files = [
 diagrams = ["jinja2", "railroad-diagrams"]
 
 [[package]]
+name = "pyserial"
+version = "3.5"
+description = "Python Serial Port Extension"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pyserial-3.5-py2.py3-none-any.whl", hash = "sha256:c4451db6ba391ca6ca299fb3ec7bae67a5c55dde170964c7a14ceefec02f2cf0"},
+    {file = "pyserial-3.5.tar.gz", hash = "sha256:3c77e014170dfffbd816e6ffc205e9842efb10be9f58ec16d3e8675b4925cddb"},
+]
+
+[package.extras]
+cp2110 = ["hidapi"]
+
+[[package]]
 name = "python-dateutil"
 version = "2.8.2"
 description = "Extensions to the standard Python datetime module"
@@ -481,6 +484,29 @@ files = [
 typing-extensions = "*"
 
 [[package]]
+name = "pyvisa-py"
+version = "0.7.1"
+description = "Pure Python implementation of a VISA library."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "PyVISA-py-0.7.1.tar.gz", hash = "sha256:d0dd824055fd8cab8a2685d10e1277d52ad19604322fa53c17b47e70258d4594"},
+    {file = "PyVISA_py-0.7.1-py3-none-any.whl", hash = "sha256:3675aa9fcabfcee6fbcc1e596f565c2538ecd0f69e7061f479d147b4afbd8c75"},
+]
+
+[package.dependencies]
+pyvisa = ">=1.13.0"
+typing-extensions = "*"
+
+[package.extras]
+gpib-ctypes = ["gpib-ctypes (>=0.3.0)"]
+hislip-discovery = ["zeroconf"]
+psutil = ["psutil"]
+serial = ["pyserial (>=3.0)"]
+usb = ["pyusb"]
+vicp = ["pyvicp", "zeroconf"]
+
+[[package]]
 name = "six"
 version = "1.16.0"
 description = "Python 2 and 3 compatibility utilities"
@@ -490,19 +516,6 @@ files = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
 ]
-
-[[package]]
-name = "statistics"
-version = "1.0.3.5"
-description = "A Python 2.* port of 3.4 Statistics Module"
-optional = false
-python-versions = "*"
-files = [
-    {file = "statistics-1.0.3.5.tar.gz", hash = "sha256:2dc379b80b07bf2ddd5488cad06b2b9531da4dd31edb04dc9ec0dc226486c138"},
-]
-
-[package.dependencies]
-docutils = ">=0.3"
 
 [[package]]
 name = "typing-extensions"
@@ -517,5 +530,5 @@ files = [
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.12"
-content-hash = "430cb05fdff72927247f0b8ebea1c3f3df88ffc6313f71af6d297c32073a6eae"
+python-versions = "^3.10"
+content-hash = "9cc861f130361ba1b33fed5a3577f087e5f40acae4945ea7297ec4514a29554a"
