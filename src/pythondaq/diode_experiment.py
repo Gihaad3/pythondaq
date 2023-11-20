@@ -2,53 +2,71 @@ import numpy as np
 import statistics
 from pythondaq.arduino_device import ArduinoVISADevice, list_devices
 
-# Deze class stuurt een spanning door een elektrisch circuit 
-# en meet de spanning over en de stroomsterkte door een LED
+"""THis class contains runs the experiment a number of times for a given voltage in units ADC
+"""
 class DiodeExperiment():
 
-    # Deze method bewaart alle hergebruikte informatie
+
+    """This method opens the selects the device and srores important values
+    """
     def __init__(self):
+
+        # Here the port is slected and uses the controller to open it
         port = "ASRL9::INSTR"
         self.device = ArduinoVISADevice(port=port)
 
-        # Deze lijsten slaan de spanning en stroomsterkte apart en samen op
-        self.U_LED = []
-        self.I_LED = []
-
+        # These are the lists with values rtegarding the current, I
         self.I_temp = []
-        self.standaard_deviaties_I =[]
-        self.gemidelde_I = []
+        self.standard_deviation_I =[]
+        self.average_I = []
         
+        # These are the lists with values rtegarding the voltage, U
         self.U_temp = []
-        self.standaard_deviaties_U = []
-        self.gemiddelde_U = []
-    # Deze method voert het experiment uit
+        self.standard_deviation_U = []
+        self.average_U = []
+
+    """THis method repeats the experiment a number of times over a interval in units ADC and calculates the standard deviation and average
+
+    Returns:
+        list: The standard deviation of I, the avergae of I, The standard deviation of U, the avergae of U
+    """
     def scan(self, min, max, N):
+        #  I go over an intervalin units ADC
         for value in range(min, max):
+
+            # I set the voltage in ADC
             self.device.set_output_value(value)
 
+            # temperary lists for current and voltage
             self.I_temp = []
             self.U_temp = []
-            for herhaling in range(N):   
-                U_totaal = self.device.get_input_voltage(channel = 1) 
-                U_weerstand = self.device.get_input_voltage(channel = 2) 
-                U_LED = U_totaal - U_weerstand
-                I = U_weerstand / 220
+
+            #  I repeat the experiment for every step of the interval
+            for herhaling in range(N): 
+                
+                # I measure the voltage in volts over the entire circuit and the resisctence
+                U_total = self.device.get_input_voltage(channel = 1) 
+                U_resisctence = self.device.get_input_voltage(channel = 2) 
+
+                # I calculate the voltage and current and add them to lists
+                U_LED = U_total - U_resisctence
+                I = U_resisctence / 220
                 self.I_temp.append(I)
                 self.U_temp.append(U_LED)
             
+            #  I calculate the standard deviation and averge of the voltage and current
             gem_I = statistics.mean(self.I_temp)
             std_I = np.std(self.I_temp)/(N**0.5)
             
-            self.standaard_deviaties_I.append(std_I)
-            self.gemidelde_I.append(gem_I) 
+            self.standard_deviation_I.append(std_I)
+            self.average_I.append(gem_I) 
 
             gem_U = statistics.mean(self.U_temp)
             std_U = np.std(self.U_temp)/(N**0.5)
 
-            self.standaard_deviaties_U.append(std_U)
-            self.gemiddelde_U.append(gem_U)
+            self.standard_deviation_U.append(std_U)
+            self.average_U.append(gem_U)
 
-
+        #  I turn the LED off
         self.device.set_output_value(0)
-        return self.standaard_deviaties_I, self.gemidelde_I, self.standaard_deviaties_U, self.gemiddelde_U
+        return self.standard_deviation_I, self.average_I, self.standard_deviation_U, self.average_U

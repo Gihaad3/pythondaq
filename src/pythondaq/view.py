@@ -2,10 +2,10 @@ import matplotlib.pyplot as plt
 import csv
 from pythondaq.diode_experiment import DiodeExperiment
 
-# Deze functie geeft door dat het experiment 
-# moet worden uitgevoerd
+"""Plotting the voltage and current and putting them in a csv file
+"""
 def view():
-   # Ik neem de data uit de model
+   # I take the data out of the model
    model=DiodeExperiment()
    data = model.scan(0, 1023, 10)
 
@@ -14,13 +14,13 @@ def view():
    std_U = data[2]
    gem_U = data[3]
 
-	#Ik plot alles
+	# I plot the data
    plt.errorbar(gem_U, gem_I, yerr = std_I, xerr = std_U, fmt="o", ms=3)
    plt.xlabel("Spanning in Volt")
    plt.ylabel("Stroomsterkte in Ampere")
 
 
-   #Ik sla de data op in een csv bestand
+   # I store the data in a csv file
    with open('metingen.csv', 'w', newline='') as csvfile:
       writer = csv.writer(csvfile)
       writer.writerow(['U', 'I'])
