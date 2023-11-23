@@ -10,7 +10,7 @@ class ArduinoVISADevice():
         """
         rm = pyvisa.ResourceManager("@py")
         self.device = rm.open_resource(
-            port, read_termination="\r\n", write_termination="\n"\
+            port, read_termination="\r\n", write_termination="\n"
         )
 
     
