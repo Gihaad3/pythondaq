@@ -1,5 +1,5 @@
 import click
-from pythondaq.arduino_device import ArduinoVISADevice, list_devices
+from pythondaq.arduino_device import ArduinoVISADevice, list_devices, identification
 from pythondaq.diode_experiment import DiodeExperiment
 import csv
 
@@ -65,3 +65,15 @@ def scan(min, max, output, repeats, port):
    
         return print(measurments)
 
+
+@cmd_group.command()
+@click.option(
+    "-p",
+    "--port",
+    help="gives the ability to choose a device from the command list",
+    show_default=True)
+def info(port):
+    if port is None:
+        print("Error: No port given")
+    else:
+        return print(identification(port))

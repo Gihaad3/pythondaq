@@ -64,3 +64,10 @@ def list_devices():
     """
     rm = pyvisa.ResourceManager("@py")
     return rm.list_resources()
+
+def identification(port):
+    rm = pyvisa.ResourceManager("@py")
+    device = rm.open_resource(
+        port, read_termination="\r\n", write_termination="\n"
+    )
+    return device.query("*IDN?")
