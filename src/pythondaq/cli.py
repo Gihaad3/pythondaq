@@ -32,9 +32,17 @@ def list():
     help="this outputs the data in a csv ddocument.",
     show_default = True,
 )
-def scan(min, max, output):
+@click.option(
+    "-r",
+    "--repeats",
+    default=1,
+    help="repeats the experiment a number of times.",
+    show_default = True,
+)
+
+def scan(min, max, output, repeats):
     model = DiodeExperiment()
-    data = model.scan(min, max, N=1)
+    data = model.scan(min, max, N=repeats)
     measurments = []
     for volt in range(min, max):
         measurments.append([data[3][volt], data[1][volt]])
