@@ -41,21 +41,26 @@ def list():
 )
 @click.option(
     "--port",
-    default="ERROR: Portname not given.",
     show_default=True
 )
 def scan(min, max, output, repeats, port):
-    model = DiodeExperiment(port=port)
-    data = model.scan(min, max, N=repeats)
-    measurments = []
-    for volt in range(min, max):
-        measurments.append([data[3][volt], data[1][volt]])
+    if port is None:
+        print("Error: No port given")
+    else:
+        port=list_devices()[port]
+        model = DiodeExperiment(port)
+        data = model.scan(min, max, N=repeats)
+        measurments = []
+        for volt in range(min, max):
+            measurments.append([data[3][volt], data[1][volt]])
+        
+        if output is not None:       
+            with open(f'{output}.csv', 'w', newline='') as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerow(['U', 'I'])
+                for a, b in zip(data[3], data[1]):
+                    writer.writerow([a, b])
     
-    if output is not None:       
-        with open(f'{output}.csv', 'w', newline='') as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerow(['U', 'I'])
-            for a, b in zip(data[3], data[1]):
-                writer.writerow([a, b])
-       
-    return print(measurments)
+   
+        return print(measurments)
+
