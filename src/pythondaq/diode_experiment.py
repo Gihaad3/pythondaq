@@ -26,7 +26,7 @@ class DiodeExperiment():
 
     
     def scan(self, min, max, N):
-        """THis method repeats the experiment a number of times over a interval in units ADC and calculates the standard deviation and average
+        """This method repeats the experiment a number of times over a interval in units ADC and calculates the standard deviation and average
 
         Returns:
             list: The standard deviation of I, the avergae of I, The standard deviation of U, the avergae of U
