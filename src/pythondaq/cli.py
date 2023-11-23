@@ -2,6 +2,7 @@ import click
 from pythondaq.arduino_device import ArduinoVISADevice, list_devices, identification
 from pythondaq.diode_experiment import DiodeExperiment
 import csv
+import matplotlib.pyplot as plt
 
 @click.group()
 def cmd_group():
@@ -45,12 +46,23 @@ def list():
     help="gives the ability to choose a device from the command list",
     show_default=True
 )
-def scan(min, max, output, repeats, port):
+@click.option(
+    "-g",
+    "--graph/--no-graph",
+    default=False,
+    help="this plots the data in a scattr plot",
+)
+
+def scan(min, max, output, repeats, port, graph):
     if port is None:
         print("Error: No port given")
     else:
         model = DiodeExperiment(port=port)
         data = model.scan(min, max, N=repeats)
+        std_I = data[0]
+        gem_I = data[1]
+        std_U = data[2]
+        gem_U = data[3]
         measurments = []
         for volt in range(min, max):
             measurments.append([data[3][volt], data[1][volt]])
@@ -62,8 +74,13 @@ def scan(min, max, output, repeats, port):
                 for a, b in zip(data[3], data[1]):
                     writer.writerow([a, b])
     
-   
-        return print(measurments)
+        if graph is not None:
+            plt.errorbar(gem_U, gem_I, yerr = std_I, xerr = std_U, fmt="o", ms=1)
+            plt.xlabel("Spanning in Volt")
+            plt.ylabel("Stroomsterkte in Ampere")
+            return print(measurments), plt.show()
+        else:
+            return print(measurments)
 
 
 @cmd_group.command()
