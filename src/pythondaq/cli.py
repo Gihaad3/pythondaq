@@ -7,18 +7,11 @@ import csv
 def cmd_group():
     pass
 
-# @cmd_group.command()
-# @click.option(
-
-#     default=1,
-#     help="print",
-#     show_default=True,
-# )
-# def list():
-#     return print("hallo")
+@cmd_group.command('list')
+def list():
+    return print(list_devices())
 
 
-# THE ABOVE FUNCTION IS TYEMPORARLY COMMENTED, I WILL USE IT SOON 
 
 @cmd_group.command()
 @click.option(
