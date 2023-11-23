@@ -26,8 +26,8 @@ class ArduinoVISADevice():
     def set_output_value(self, value):
         """This method aplies a voltage in units of ADC(from 0-1023)
         """
-        value_volt= (1023/3.3) * value
-        self.device.query(f"OUT:CH0 {value_volt}")
+        
+        self.device.query(f"OUT:CH0 {value}")
 
     
     def get_output_value(self):
@@ -36,8 +36,7 @@ class ArduinoVISADevice():
         Returns:
             integer: a value from 0-1023 in ADC
         """
-        value_volt= (1023/3.3) * self.device.query(f"MEAS:CH0?")
-        return value_volt
+        return self.device.query(f"MEAS:CH0?")
 
     
     def get_input_value(self, channel):
@@ -46,9 +45,8 @@ class ArduinoVISADevice():
         Returns:
             integer: a value from 0-1023 in ADC
         """
-        value_volt= (1023/3.3) * self.device.query(f"MEAS:CH{channel}?")
 
-        return value_volt
+        return self.device.query(f"MEAS:CH{channel}?")
 
     def get_input_voltage(self, channel=2):
         """This method measures the voltage in units Volt over a given channel

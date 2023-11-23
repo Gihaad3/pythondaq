@@ -3,13 +3,21 @@ from pythondaq.arduino_device import ArduinoVISADevice, list_devices, identifica
 from pythondaq.diode_experiment import DiodeExperiment
 import csv
 import matplotlib.pyplot as plt
+import numpy as np
 
 @click.group()
 def cmd_group():
+    """I define the name of a command group.
+    """    
     pass
 
 @cmd_group.command('list')
 def list():
+    """I print all the availeble devices.
+
+    Returns:
+        	string: a list of devices
+    """    
     return print(list_devices())
 
 
@@ -24,7 +32,7 @@ def list():
 
 @click.option(
     "--max",
-    default=1023,
+    default=3.3,
     help="this gives the maximum voltage over the circuit.",
     show_default=True
 )
@@ -54,19 +62,37 @@ def list():
 )
 
 def scan(min, max, output, repeats, port, graph):
+    """This is a command that measures the voltage over and the current trough a device.
+
+    Args:
+        min (int): the minimal voltage
+        max (int): the maximum voltage
+        output (string ): this eports the data in a csv document
+        repeats (int): this gives the number of times the experiment is repeated
+        port (string): thestring of the wanted device
+        graph : this puts the data in a graph
+
+    Returns:
+        list: the voltage and current is printed in a list
+    """    
+    # the condition that the port name is given must be met
     if port is None:
         print("Error: No port given")
     else:
+        # I run the experiment
         model = DiodeExperiment(port=port)
         data = model.scan(min, max, N=repeats)
         std_I = data[0]
         gem_I = data[1]
         std_U = data[2]
         gem_U = data[3]
+
+    # I put the volt and ampere in one list of lists
         measurments = []
-        for volt in range(min, max):
-            measurments.append([data[3][volt], data[1][volt]])
+        for a, b in zip(gem_U, gem_I):
+            print([a,b])
         
+        # if a name is given than the data is exported as acsv file
         if output is not None:       
             with open(f'{output}.csv', 'w', newline='') as csvfile:
                 writer = csv.writer(csvfile)
@@ -74,6 +100,7 @@ def scan(min, max, output, repeats, port, graph):
                 for a, b in zip(data[3], data[1]):
                     writer.writerow([a, b])
     
+        # If wanted the data is plotted
         if graph is not None:
             plt.errorbar(gem_U, gem_I, yerr = std_I, xerr = std_U, fmt="o", ms=1)
             plt.xlabel("Spanning in Volt")
@@ -90,6 +117,14 @@ def scan(min, max, output, repeats, port, graph):
     help="gives the ability to choose a device from the command list",
     show_default=True)
 def info(port):
+    """Gives the identification string if wanted
+
+    Args:
+        port (string): the identification string
+
+    Returns:
+        string: the identification string
+    """    
     if port is None:
         print("Error: No port given")
     else:
