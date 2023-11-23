@@ -8,14 +8,13 @@ class DiodeExperiment():
     """
 
     
-    def __init__(self):
+    def __init__(self, port):
         """This method opens the selects the device and srores important values
         """
         # Here the port is slected and uses the controller to open it
-        port = "ASRL9::INSTR"
         self.device = ArduinoVISADevice(port=port)
 
-        # These are the lists with values rtegarding the current, I
+        # These are the lists with values regarding the current, I
         self.I_temp = []
         self.standard_deviation_I =[]
         self.average_I = []
@@ -32,7 +31,7 @@ class DiodeExperiment():
         Returns:
             list: The standard deviation of I, the avergae of I, The standard deviation of U, the avergae of U
         """
-        #  I go over an intervalin units ADC
+        #  I go over an interval in units ADC
         for value in range(min, max):
 
             # I set the voltage in ADC

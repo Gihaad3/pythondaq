@@ -39,9 +39,13 @@ def list():
     help="repeats the experiment a number of times.",
     show_default = True,
 )
-
-def scan(min, max, output, repeats):
-    model = DiodeExperiment()
+@click.option(
+    "--port",
+    default="ERROR: Portname not given.",
+    show_default=True
+)
+def scan(min, max, output, repeats, port):
+    model = DiodeExperiment(port=port)
     data = model.scan(min, max, N=repeats)
     measurments = []
     for volt in range(min, max):
