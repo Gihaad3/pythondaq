@@ -40,15 +40,16 @@ def list():
     show_default = True,
 )
 @click.option(
+    "-p",
     "--port",
+    help="gives the ability to choose a device from the command list",
     show_default=True
 )
 def scan(min, max, output, repeats, port):
     if port is None:
         print("Error: No port given")
     else:
-        port=list_devices()[port]
-        model = DiodeExperiment(port)
+        model = DiodeExperiment(port=port)
         data = model.scan(min, max, N=repeats)
         measurments = []
         for volt in range(min, max):
