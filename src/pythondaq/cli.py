@@ -1,6 +1,5 @@
 import click
-from pythondaq.arduino_device import ArduinoVISADevice, list_devices, identification
-from pythondaq.diode_experiment import DiodeExperiment
+from pythondaq.diode_experiment import DiodeExperiment, ArduinoVISADevice, list_devices, identification
 import csv
 import matplotlib.pyplot as plt
 import numpy as np
@@ -89,15 +88,15 @@ def scan(min, max, output, repeats, port, graph):
 
     # I put the volt and ampere in one list of lists
         measurments = []
-        for a, b in zip(gem_U, gem_I):
-            print([a,b])
+        for a, b, c, d in zip(gem_U, std_U, gem_I, std_I):
+            print([a,b,c,d])
         
         # if a name is given than the data is exported as acsv file
         if output is not None:       
             with open(f'{output}.csv', 'w', newline='') as csvfile:
                 writer = csv.writer(csvfile)
-                writer.writerow(['U', 'I'])
-                for a, b in zip(data[3], data[1]):
+                writer.writerow(['U', 'std_U', 'I', 'std_I'])
+                for a, b in zip(gem_U, std_U, gem_I, std_I):
                     writer.writerow([a, b])
     
         # If wanted the data is plotted
