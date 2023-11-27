@@ -31,10 +31,9 @@ class DiodeExperiment():
         Returns:
             list: The standard deviation of I, the avergae of I, The standard deviation of U, the avergae of U
         """
-        min_ADC = int((1023/3.3)*min)
-        max_ADC= int((1023/3.3)*max)
+
         #  I go over an interval in units ADC
-        for value in range(min_ADC, max_ADC):
+        for value in range(min, max):
 
             # I set the voltage in ADC
             self.device.set_output_value(value)
