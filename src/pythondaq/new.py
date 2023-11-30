@@ -9,19 +9,31 @@ import pyqtgraph as pg
 class UserInterface(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
+        central_widget = QtWidgets.QWidget()
+        self.setCentralWidget(central_widget)
         self.plot_widget = pg.PlotWidget()
 
+        vbox = QtWidgets.QVBoxLayout(central_widget)
+        vbox.addWidget(self.plot_widget)
+        hbox = QtWidgets.QHBoxLayout()
+        vbox.addLayout(hbox)
+
+        plot_button =  QtWidgets.QPushButton("Plot")
+        hbox.addWidget(plot_button)
+        plot_button.clicked.connect(self.plot)
+
     @  Slot()
-    def scan(self):
+    def scan(self, min, max, N):
         model = DiodeExperiment(port="ASRL9::INSTR")
-        data = model.scan(0, 1023, 100, )
+        data = model.scan(min=0, max=1023, N=100)
 
         return data
+    
     @Slot()
     def plot(self):
+        data = self.scan(0, 1023, 100)
         self.plot_widget.clear()
-        x = np.linspace(-np.pi, np.pi, 100)
-        self.plot_widget.plot(x, np.sin(x), symbol=None, pen={"color": "k", "width": 5})
+        self.plot_widget.plot(data[1], data[3], symbol=None, pen={"color": "k", "width": 5})
         self.plot_widget.setLabel("left", "sin(x)")
         self.plot_widget.setLabel("bottom", "x [radians]")
 
