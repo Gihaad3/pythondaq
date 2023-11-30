@@ -70,4 +70,4 @@ class DiodeExperiment():
 
         #  I turn the LED off
         self.device.set_output_value(0)
-        return self.standard_deviation_I, self.average_I, self.standard_deviation_U, self.average_U
+        return self.average_U, self.standard_deviation_U, self.average_I, self.standard_deviation_I

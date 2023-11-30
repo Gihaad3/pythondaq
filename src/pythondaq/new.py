@@ -66,10 +66,10 @@ class UserInterface(QtWidgets.QMainWindow):
     def plot(self):
         self.plot_widget.clear()
         data = self.scan(self.min, self.max, self.N)
-        std_I = data[0]
-        gem_I = data[1]
-        std_U = data[2]
-        gem_U = data[3]
+        std_I = data[3]
+        gem_I = data[2]
+        std_U = data[1]
+        gem_U = data[0]
         self.plot_widget.plot(gem_U, gem_I, symbol="o", symbolSize=5, pen=None)
         error_bars = pg.ErrorBarItem(x=np.array(gem_U), y=np.array(gem_I), width=2 * np.array(std_U), height=2 * np.array(std_I))
         self.plot_widget.addItem(error_bars)

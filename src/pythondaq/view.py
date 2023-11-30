@@ -7,13 +7,13 @@ def view():
    """Plotting the voltage and current and putting them in a csv file
    """
    # I take the data out of the model
-   model=DiodeExperiment(port=port)
-   data = model.scan(0, 1023, 10)
+   model=DiodeExperiment(port="ASRL9::INSTR")
+   data = model.scan(0, 1023, 1)
 
-   std_I = data[0]
-   gem_I = data[1]
-   std_U = data[2]
-   gem_U = data[3]
+   std_I = data[3]
+   gem_I = data[2]
+   std_U = data[1]
+   gem_U = data[0]
 
 	# I plot the data
    plt.errorbar(gem_U, gem_I, yerr = std_I, xerr = std_U, fmt="o", ms=3)
