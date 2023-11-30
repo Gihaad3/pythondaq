@@ -4,16 +4,19 @@ from PySide6 import QtWidgets
 from PySide6.QtCore import Slot
 from PySide6 import QtWidgets
 import numpy as np
+import pyqtgraph as pg
 
 class UserInterface(QtWidgets.QMainWindow):
     def __init__(self):
-        super.__init__()
-        model = DiodeExperiment()
-        data = model.scan(0, 1023, 100)
-
+        super().__init__()
         self.plot_widget = pg.PlotWidget()
-        return data
 
+    @  Slot()
+    def scan(self):
+        model = DiodeExperiment(port="ASRL9::INSTR")
+        data = model.scan(0, 1023, 100, )
+
+        return data
     @Slot()
     def plot(self):
         self.plot_widget.clear()
@@ -30,5 +33,7 @@ def main():
     sys.exit(app.exec())
 
 
+
+
 if __name__ == "__main__":
-    main()  
+    main()
