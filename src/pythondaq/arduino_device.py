@@ -48,7 +48,7 @@ class ArduinoVISADevice():
 
         return self.device.query(f"MEAS:CH{channel}?")
 
-    def get_input_voltage(self, channel=2):
+    def get_input_voltage(self, channel):
         """This method measures the voltage in units Volt over a given channel
 
         Returns:
