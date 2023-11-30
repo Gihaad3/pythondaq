@@ -26,6 +26,11 @@ class UserInterface(QtWidgets.QMainWindow):
         hbox.addWidget(plot_button)
         plot_button.clicked.connect(self.plot)
 
+        start_button = QtWidgets.QSpinBox()
+        hbox.addWidget(start_button)
+        start_button.valueChanged.connect(self.start)
+
+        self.min = 0
     @  Slot()
     def scan(self, min, max, N):
         model = DiodeExperiment(port="ASRL9::INSTR")
@@ -35,21 +40,31 @@ class UserInterface(QtWidgets.QMainWindow):
     
     @Slot()
     def plot(self):
-        # self.plot_widget.clear()
+        self.plot_widget.clear()
         data = self.scan(0, 1023, 1)
         std_I = data[0]
         gem_I = data[1]
         std_U = data[2]
         gem_U = data[3]
         self.plot_widget.plot(gem_U, gem_I, symbol="o", symbolSize=5, pen=None)
-        # error_bars = pg.ErrorBarItem(x=gem_U, y=gem_I, width=2 * np.array(std_U), height=2 * np.array(std_I))
-        # self.plot_widget.addItem(error_bars)
+        error_bars = pg.ErrorBarItem(x=np.array(gem_U), y=np.array(gem_I), width=2 * np.array(std_U), height=2 * np.array(std_I))
+        self.plot_widget.addItem(error_bars)
         # self.plot_widget.setLabel("left", "sin(x)")
         # self.plot_widget.setLabel("bottom", "x [radians]")
 
     @Slot()
     def clear(self):
         self.plot_widget.clear()
+
+
+    @Slot()
+    def start(self, min):
+        self.min = min
+
+
+
+
+
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
