@@ -7,7 +7,7 @@ def view():
    """Plotting the voltage and current and putting them in a csv file
    """
    # I take the data out of the model
-   model=DiodeExperiment()
+   model=DiodeExperiment(port=port)
    data = model.scan(0, 1023, 10)
 
    std_I = data[0]
