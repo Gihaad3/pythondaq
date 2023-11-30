@@ -82,8 +82,8 @@ class UserInterface(QtWidgets.QMainWindow):
         self.plot_widget.plot(self.gem_U, self.gem_I, symbol="o", symbolSize=5, pen=None)
         error_bars = pg.ErrorBarItem(x=np.array(self.gem_U), y=np.array(self.gem_I), width=2 * np.array(self.std_U), height=2 * np.array(self.std_I))
         self.plot_widget.addItem(error_bars)
-        # self.plot_widget.setLabel("left", "sin(x)")
-        # self.plot_widget.setLabel("bottom", "x [radians]")
+        self.plot_widget.setLabel("left", "Average voltage")
+        self.plot_widget.setLabel("bottom", "Average current")
 
     @Slot()
     def clear(self):
