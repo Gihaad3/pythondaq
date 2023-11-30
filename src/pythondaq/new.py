@@ -26,18 +26,26 @@ class UserInterface(QtWidgets.QMainWindow):
         hbox.addWidget(plot_button)
         plot_button.clicked.connect(self.plot)
 
-        # label = QtWidgets.QLabel(self)
-        # label.setText("set minimum")
-        # vbox.addWidget(label)
+        label_start = QtWidgets.QLabel("Set minimum")
+        hbox.addWidget(label_start)
 
-        start_button = QtWidgets.QSpinBox()
+        start_button = QtWidgets.QSpinBox(minimum= 0, maximum=1023, value =0)
         hbox.addWidget(start_button)
         start_button.valueChanged.connect(self.start)
 
-        stop_button = QtWidgets.QSpinBox()
-        hbox.addWidget(stop_button)
-        start_button.valueChanged.connect(self.stop)
+        label_stop = QtWidgets.QLabel("Set maximum")
+        hbox.addWidget(label_stop)
 
+        stop_button = QtWidgets.QSpinBox(minimum=0, maximum=1023, value = 1023)
+        hbox.addWidget(stop_button)
+        stop_button.valueChanged.connect(self.stop)
+
+        label_repeat = QtWidgets.QLabel("Set repeats")
+        hbox.addWidget(label_repeat)
+
+        repeat_button = QtWidgets.QSpinBox(minimum = 1, value = 1)
+        hbox.addWidget(repeat_button)
+        repeat_button.valueChanged.connect(self.repeat)
 
 
         self.min = 0
@@ -47,13 +55,17 @@ class UserInterface(QtWidgets.QMainWindow):
     def scan(self, min, max, N):
         model = DiodeExperiment(port="ASRL9::INSTR")
         data = model.scan(min, max, N)
+        
+        print(data)
+        print(min, max, N)
+ 
 
         return data
     
     @Slot()
     def plot(self):
         self.plot_widget.clear()
-        data = self.scan(0, 1023, 1)
+        data = self.scan(self.min, self.max, self.N)
         std_I = data[0]
         gem_I = data[1]
         std_U = data[2]

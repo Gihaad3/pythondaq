@@ -22,3 +22,4 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.scripts]
 view = "pythondaq.view:view"
 diode = "pythondaq.cli:cmd_group"
+plot = "pythondaq.new:main"
