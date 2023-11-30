@@ -5,6 +5,7 @@ from PySide6.QtCore import Slot
 from PySide6 import QtWidgets
 import numpy as np
 import pyqtgraph as pg
+import csv
 
 class UserInterface(QtWidgets.QMainWindow):
     def __init__(self):
@@ -47,11 +48,19 @@ class UserInterface(QtWidgets.QMainWindow):
         hbox.addWidget(repeat_button)
         repeat_button.valueChanged.connect(self.repeat)
 
+        save_button = QtWidgets.QPushButton("save")
+        hbox.addWidget(save_button)
+        save_button.clicked.connect(self.save_data)
 
         self.min = 0
         self.max = 1023
         self.N = 1
-    @  Slot()
+
+        self.std_I = []
+        self.gem_I = []
+        self.std_U = []
+        self.gem_U = []
+    @Slot()
     def scan(self, min, max, N):
         model = DiodeExperiment(port="ASRL9::INSTR")
         data = model.scan(min, max, N)
@@ -66,12 +75,12 @@ class UserInterface(QtWidgets.QMainWindow):
     def plot(self):
         self.plot_widget.clear()
         data = self.scan(self.min, self.max, self.N)
-        std_I = data[3]
-        gem_I = data[2]
-        std_U = data[1]
-        gem_U = data[0]
-        self.plot_widget.plot(gem_U, gem_I, symbol="o", symbolSize=5, pen=None)
-        error_bars = pg.ErrorBarItem(x=np.array(gem_U), y=np.array(gem_I), width=2 * np.array(std_U), height=2 * np.array(std_I))
+        self.std_I = data[3]
+        self.gem_I = data[2]
+        self.std_U = data[1]
+        self.gem_U = data[0]
+        self.plot_widget.plot(self.gem_U, self.gem_I, symbol="o", symbolSize=5, pen=None)
+        error_bars = pg.ErrorBarItem(x=np.array(self.gem_U), y=np.array(self.gem_I), width=2 * np.array(self.std_U), height=2 * np.array(self.std_I))
         self.plot_widget.addItem(error_bars)
         # self.plot_widget.setLabel("left", "sin(x)")
         # self.plot_widget.setLabel("bottom", "x [radians]")
@@ -92,8 +101,14 @@ class UserInterface(QtWidgets.QMainWindow):
     def repeat(self, N):
         self.N = N
 
-
-
+    @Slot()
+    def save_data(self):
+        filename, _ = QtWidgets.QFileDialog.getSaveFileName(filter="CSV files (*.csv)")
+        with open(f'{filename}', 'w', newline='') as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerow(['U', 'std_U', 'I', 'std_I'])
+                for a, b, c, d in zip(self.gem_U, self.std_U, self.gem_I, self.std_I):
+                    writer.writerow([a, b, c, d])
 def main():
     app = QtWidgets.QApplication(sys.argv)
     ui = UserInterface()
