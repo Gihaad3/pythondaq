@@ -33,7 +33,7 @@ class DiodeExperiment():
         """
 
         #  I go over an interval in units ADC
-        for value in range(min, max):
+        for value in np.arange(min, max, 1):
 
             # I set the voltage in ADC
             self.device.set_output_value(value)
