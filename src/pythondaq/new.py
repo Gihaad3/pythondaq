@@ -32,10 +32,16 @@ class UserInterface(QtWidgets.QMainWindow):
     @Slot()
     def plot(self):
         data = self.scan(0, 1023, 1)
+        std_I = data[0]
+        gem_I = data[1]
+        std_U = data[2]
+        gem_U = data[3]
         self.plot_widget.clear()
-        self.plot_widget.plot(data[3], data[1], symbol="o", pen={"color": "w", "width": 5})
-        self.plot_widget.setLabel("left", "sin(x)")
-        self.plot_widget.setLabel("bottom", "x [radians]")
+        self.plot_widget.plot(gem_U, gem_I, symbol="o", symbolSize=5, pen=None)
+        error_bars = pg.ErrorBarItem(x=gem_U, y=gem_I, width=2 * np.array(std_U), height=2 * np.array(std_I))
+        self.plot_widget.addItem(error_bars)
+        # self.plot_widget.setLabel("left", "sin(x)")
+        # self.plot_widget.setLabel("bottom", "x [radians]")
 
 
 def main():
