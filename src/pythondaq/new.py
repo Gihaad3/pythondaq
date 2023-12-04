@@ -1,8 +1,7 @@
 import sys
-from pythondaq.diode_experiment import DiodeExperiment
+from pythondaq.diode_experiment import DiodeExperiment, list_devices
 from PySide6 import QtWidgets
 from PySide6.QtCore import Slot
-from PySide6 import QtWidgets
 import numpy as np
 import pyqtgraph as pg
 import csv
@@ -52,25 +51,38 @@ class UserInterface(QtWidgets.QMainWindow):
         hbox.addWidget(save_button)
         save_button.clicked.connect(self.save_data)
 
+        self.lists = list_devices()
+        label_choose = QtWidgets.QLabel("Choose device")
+        hbox.addWidget(label_choose)
+
+        choose_device = QtWidgets.QComboBox()
+        choose_device.addItems(self.lists)
+        hbox.addWidget(choose_device)
+        choose_device.currentIndexChanged.connect(self.port)
+
         self.min = 0
         self.max = 1023
         self.N = 1
+        self.ports = 0
 
         self.std_I = []
         self.gem_I = []
         self.std_U = []
         self.gem_U = []
+        
+        self.port(self.ports)
+
+        self.plot_widget.setLabel("left", "Average current trough LED in amperes")
+        self.plot_widget.setLabel("bottom", "Average voltage over LED in volts")
+   
+
     @Slot()
     def scan(self, min, max, N):
-        model = DiodeExperiment(port="ASRL9::INSTR")
+        model = DiodeExperiment(port=self.ports)
         data = model.scan(min, max, N)
-        
-        print(data)
-        print(min, max, N)
- 
-
         return data
     
+
     @Slot()
     def plot(self):
         self.plot_widget.clear()
@@ -82,24 +94,29 @@ class UserInterface(QtWidgets.QMainWindow):
         self.plot_widget.plot(self.gem_U, self.gem_I, symbol="o", symbolSize=5, pen=None)
         error_bars = pg.ErrorBarItem(x=np.array(self.gem_U), y=np.array(self.gem_I), width=2 * np.array(self.std_U), height=2 * np.array(self.std_I))
         self.plot_widget.addItem(error_bars)
-        self.plot_widget.setLabel("left", "Average voltage")
-        self.plot_widget.setLabel("bottom", "Average current")
+
 
     @Slot()
     def clear(self):
         self.plot_widget.clear()
 
+
     @Slot()
     def start(self, min):
-        self.min = min
+        min_V = 1023/3.3 * min
+        self.min = min_V
+
 
     @Slot()
     def stop(self, max):
-        self.max=max
+        max_V = 1023/3.3 * max  
+        self.max= max_V
+
 
     @Slot()
     def repeat(self, N):
         self.N = N
+
 
     @Slot()
     def save_data(self):
@@ -109,6 +126,14 @@ class UserInterface(QtWidgets.QMainWindow):
                 writer.writerow(['U', 'std_U', 'I', 'std_I'])
                 for a, b, c, d in zip(self.gem_U, self.std_U, self.gem_I, self.std_I):
                     writer.writerow([a, b, c, d])
+
+
+    @Slot()
+    def port(self, ports):
+        self.ports = self.lists[ports]
+
+
+
 def main():
     app = QtWidgets.QApplication(sys.argv)
     ui = UserInterface()
