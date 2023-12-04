@@ -1,6 +1,6 @@
 import numpy as np
 import statistics
-from pythondaq.arduino_device import ArduinoVISADevice, list_devices, identification, close
+from pythondaq.arduino_device import ArduinoVISADevice, list_devices, identification
 
 
 class DiodeExperiment():
@@ -71,3 +71,10 @@ class DiodeExperiment():
         #  I turn the LED off
         self.device.set_output_value(0)
         return self.average_U, self.standard_deviation_U, self.average_I, self.standard_deviation_I
+
+        
+    def close(self):
+        """This method closes the device
+        """    
+        
+        self.device.close()

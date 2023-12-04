@@ -1,5 +1,5 @@
 import sys
-from pythondaq.diode_experiment import DiodeExperiment, list_devices, close
+from pythondaq.diode_experiment import DiodeExperiment, list_devices
 from PySide6 import QtWidgets
 from PySide6.QtCore import Slot
 import numpy as np
@@ -130,7 +130,7 @@ class UserInterface(QtWidgets.QMainWindow):
         """        
         model = DiodeExperiment(port=self.ports)
         data = model.scan(min, max, N)
-        close()
+        model.close()
 
         return data
     

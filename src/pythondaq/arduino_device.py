@@ -56,6 +56,12 @@ class ArduinoVISADevice():
         V= 3.3/1023 * int(self.device.query(f"MEAS:CH{channel}?"))
         return V
 
+    def close(self):
+        """This method closes the device
+        """    
+        
+        self.device.close()
+
 
 def list_devices():
     """This function gives the available devices in a tuple
@@ -80,9 +86,3 @@ def identification(port):
         port, read_termination="\r\n", write_termination="\n"
     )
     return device.query("*IDN?")
-
-def close():
-    """This function closes the device
-    """    
-    rm = pyvisa.ResourceManager("@py")
-    rm.close()
