@@ -1,5 +1,5 @@
 import click
-from pythondaq.diode_experiment import DiodeExperiment, ArduinoVISADevice, list_devices, identification
+from pythondaq.diode_experiment import DiodeExperiment, list_devices, identification
 import csv
 import matplotlib.pyplot as plt
 import numpy as np
@@ -81,15 +81,14 @@ def scan(min, max, output, repeats, port, graph):
         # I run the experiment
         model = DiodeExperiment(port=port)
         data = model.scan(min, max, N=repeats)
-        std_I = data[0]
-        gem_I = data[1]
-        std_U = data[2]
-        gem_U = data[3]
+        gem_U = data[0]
+        std_U = data[1]
+        gem_I = data[2]
+        std_I = data[3]
 
-    # I put the volt and ampere in one list of lists
+        # I put the volt and ampere in one list of lists
         measurments = []
-        for a, b, c, d in zip(gem_U, std_U, gem_I, std_I):
-            print([a,b,c,d])
+
         
         # if a name is given than the data is exported as acsv file
         if output is not None:       
@@ -104,10 +103,10 @@ def scan(min, max, output, repeats, port, graph):
             plt.errorbar(gem_U, gem_I, yerr = std_I, xerr = std_U, fmt="o", ms=1)
             plt.xlabel("Spanning in Volt")
             plt.ylabel("Stroomsterkte in Ampere")
-            return print(measurments), plt.show()
+            return plt.show()
         else:
-            return print(measurments)
-
+            for a, b, c, d in zip(gem_U, std_U, gem_I, std_I):
+                print([a,b,c,d])
 
 @cmd_group.command()
 @click.option(
