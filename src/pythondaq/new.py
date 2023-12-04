@@ -7,7 +7,7 @@ import pyqtgraph as pg
 import csv
 
 class UserInterface(QtWidgets.QMainWindow):
-    """This class creates an graphical user interface(GUI) that can plot and/or save the data from a experiment, the variables of the experimetn can be changed, those are the minimum and maximum(3.3 Volts) voltage in volts and the number of times the experiment is repeated.
+    """This class creates an graphical user interface(GUI) that can plot and/or save the data from a experiment, the variables of the experiment can be changed, those are the minimum and maximum(3.3 Volts) voltage in volts and the number of times the experiment is repeated.
     """
 
     def __init__(self):
@@ -22,54 +22,39 @@ class UserInterface(QtWidgets.QMainWindow):
         self.plot_widget = pg.PlotWidget()
         vbox = QtWidgets.QVBoxLayout(central_widget)
         vbox.addWidget(self.plot_widget)
-        
+
         # This creates an horizontal layout and adds it to the vertical layout
         hbox = QtWidgets.QHBoxLayout()
         vbox.addLayout(hbox)
-
-        # This creates and adds a button to the GUI, when pressed the method clear is activated
-        clear_button = QtWidgets.QPushButton("Clear")
-        vbox.addWidget(clear_button)
-        clear_button.clicked.connect(self.clear)
-
-        # This creates and adds a button to the GUI, when pressed the method plot is activated
-        plot_button =  QtWidgets.QPushButton("Plot")
-        hbox.addWidget(plot_button)
-        plot_button.clicked.connect(self.plot)
-
-        # This creates a button that can change a value in the start method
-        start_button = QtWidgets.QSpinBox(minimum= 0, maximum=1023, value =0)
-        hbox.addWidget(start_button)
-        start_button.valueChanged.connect(self.start)
 
         # This is the label for the minimum value button
         label_start = QtWidgets.QLabel("Set minimum")
         hbox.addWidget(label_start)
 
-        # This creates a button that can change a value in the stop method
-        stop_button = QtWidgets.QSpinBox(minimum=0, maximum=1023, value = 1023)
-        hbox.addWidget(stop_button)
-        stop_button.valueChanged.connect(self.stop)
+        # This creates a button that can change the minimum voltage in volts trough the start method
+        start_button = QtWidgets.QDoubleSpinBox(minimum= 0, maximum=3.3, value =0)
+        hbox.addWidget(start_button)
+        start_button.valueChanged.connect(self.start)
 
         # This creates a label for the maximum value button
         label_stop = QtWidgets.QLabel("Set maximum")
         hbox.addWidget(label_stop)
 
-        # This creates a  button that can change a value in the repeat method
-        repeat_button = QtWidgets.QSpinBox(minimum = 1, value = 1)
-        hbox.addWidget(repeat_button)
-        repeat_button.valueChanged.connect(self.repeat)
+        # This creates a button that can change the maximum voltage in volts trough the stop method
+        stop_button = QtWidgets.QDoubleSpinBox(minimum=0, maximum=3.3, value = 3.3)
+        hbox.addWidget(stop_button)
+        stop_button.valueChanged.connect(self.stop)
 
         # This creates a label for the number of repeats value button
         label_repeat = QtWidgets.QLabel("Set repeats")
         hbox.addWidget(label_repeat)
 
-        # This creates and adds a button to the GUI, when pressed the method save is activated
-        save_button = QtWidgets.QPushButton("save")
-        hbox.addWidget(save_button)
-        save_button.clicked.connect(self.save_data)
+        # This creates a  button that can change the number of repeats through the repeat method
+        repeat_button = QtWidgets.QSpinBox(minimum = 1, value = 1)
+        hbox.addWidget(repeat_button)
+        repeat_button.valueChanged.connect(self.repeat)
 
-        # here all the devices are given in a list
+        # Here all the devices are given in a list
         self.lists = list_devices()
 
         # This is the label for the device selection menu
@@ -81,6 +66,26 @@ class UserInterface(QtWidgets.QMainWindow):
         choose_device.addItems(self.lists)
         hbox.addWidget(choose_device)
         choose_device.currentIndexChanged.connect(self.port)
+
+        # This creates and adds a button to the GUI, when pressed the method plot is activated
+        plot_button =  QtWidgets.QPushButton("Plot")
+        vbox.addWidget(plot_button)
+        plot_button.clicked.connect(self.plot)
+
+        # This creates and adds a button to the GUI, when pressed the method save is activated
+        save_button = QtWidgets.QPushButton("save")
+        vbox.addWidget(save_button)
+        save_button.clicked.connect(self.save_data)
+
+        # This creates and adds a button to the GUI, when pressed the method clear is activated
+        clear_button = QtWidgets.QPushButton("Clear")
+        vbox.addWidget(clear_button)
+        clear_button.clicked.connect(self.clear)
+
+        # THis creates and adds a button to the GUI, when pressed the method close is activated
+        quit_button = QtWidgets.QPushButton("Quit")
+        vbox.addWidget(quit_button)
+        quit_button.clicked.connect(self.close)
 
         # Minimum and maximum voltage in ADC units
         self.min = 0
@@ -96,7 +101,7 @@ class UserInterface(QtWidgets.QMainWindow):
         self.std_U = []
         self.gem_U = []
         
-        # I choose the default device 
+        # I set the default device 
         self.port(self.ports)
 
         # I name the axis of the plot
@@ -114,10 +119,11 @@ class UserInterface(QtWidgets.QMainWindow):
             N (int): the number of repeats
 
         Returns:
-            tuple: This tuple has respectively the data for the average voltage, the standard defiation of the voltage, the average current, the standard deviation of the current.
+            tuple: This tuple has respectively the data for the average voltage, the standard defiation of the voltage, the average current and the standard deviation of the current.
         """        
         model = DiodeExperiment(port=self.ports)
         data = model.scan(min, max, N)
+        print(min, max)
         
         return data
     
@@ -150,27 +156,33 @@ class UserInterface(QtWidgets.QMainWindow):
         """ 
         self.plot_widget.clear()
 
+    @Slot()
+    def close(self):
+        """This method closes the GUI
+        """        
+        quit()
+
 
     @Slot()
     def start(self, min):
-        """This method converts ADC to volts and changes the minimum value.
+        """This method converts volts to ADC and changes the minimum value.
 
         Args:
             min (int): This is minimum voltage in volts send over the circuit
         """
-        min_V = 1023/3.3 * min
-        self.min = min_V
+        min_ADC = int(1023/3.3 * min)
+        self.min = min_ADC
 
 
     @Slot()
     def stop(self, max):
-        """This method converts ADC to volts and changes the maximum value.
+        """This method converts volts to ADC and changes the maximum value.
 
         Args:
             max (int): This is the maximum voltage in volts over the circuit
         """  
-        max_V = 1023/3.3 * max  
-        self.max= max_V
+        max_ADC = int(1023/3.3 * max)
+        self.max= max_ADC
 
 
     @Slot()
@@ -192,10 +204,10 @@ class UserInterface(QtWidgets.QMainWindow):
         
         # The data is stored in a csv file
         with open(f'{filename}', 'w', newline='') as csvfile:
-                writer = csv.writer(csvfile)
-                writer.writerow(['U', 'std_U', 'I', 'std_I'])
-                for a, b, c, d in zip(self.gem_U, self.std_U, self.gem_I, self.std_I):
-                    writer.writerow([a, b, c, d])
+            writer = csv.writer(csvfile)
+            writer.writerow(['U', 'std_U', 'I', 'std_I'])
+            for a, b, c, d in zip(self.gem_U, self.std_U, self.gem_I, self.std_I):
+                writer.writerow([a, b, c, d])
 
 
     @Slot()
