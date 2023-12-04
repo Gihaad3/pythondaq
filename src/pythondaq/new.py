@@ -17,10 +17,12 @@ class UserInterface(QtWidgets.QMainWindow):
         # Calls the __init__() of the parent class
         super().__init__()
 
-        # This creates a central- and plot widget and adds it to the vertical layout 
+        # This creates a central- and plot widget 
         central_widget = QtWidgets.QWidget()
         self.setCentralWidget(central_widget)
         self.plot_widget = pg.PlotWidget()
+        
+        # This creates a vertical layout in the central widget and adds the plot widget to it
         vbox = QtWidgets.QVBoxLayout(central_widget)
         vbox.addWidget(self.plot_widget)
 
@@ -100,7 +102,7 @@ class UserInterface(QtWidgets.QMainWindow):
         self.N = 1
         self.ports = 0
 
-        # These are all the used lists
+        # These are the used lists
         self.std_I = []
         self.gem_I = []
         self.std_U = []

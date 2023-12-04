@@ -4,12 +4,12 @@ from pythondaq.arduino_device import ArduinoVISADevice, list_devices, identifica
 
 
 class DiodeExperiment():
-    """This class contains runs the experiment a number of times for a given voltage in units ADC
+    """This class puts a voltage in units ADC over the circuit, calculates the average and standard deviation of the voltage over and the current through the LED. The varibles can be changed, those are minimum and maximum(1023 ADC) voltage and the number of times the experiment is repeated
     """
 
     
     def __init__(self, port):
-        """This method opens the selects the device and srores important values
+        """This method opens the selects the device and stores important values
         """
         # Here the port is slected and uses the controller to open it
         self.device = ArduinoVISADevice(port=port)
@@ -26,13 +26,13 @@ class DiodeExperiment():
 
     
     def scan(self, min, max, N):
-        """This method repeats the experiment a number of times over a interval in units ADC and calculates the standard deviation and average
+        """This method repeats the experiment a number of times over an interval in units ADC and calculates the standard deviation and average of the voltage over and the current through the LED
 
         Returns:
-            list: The standard deviation of I, the avergae of I, The standard deviation of U, the avergae of U
+            tuple: The average of U, the standard deviation of U, the avergae of I, The standard deviation of I
         """
 
-        #  I go over an interval in units ADC
+        # I go over an interval in units ADC
         for value in np.arange(min, max, 1):
 
             # I set the voltage in ADC
