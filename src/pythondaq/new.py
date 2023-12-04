@@ -67,19 +67,23 @@ class UserInterface(QtWidgets.QMainWindow):
         hbox.addWidget(choose_device)
         choose_device.currentIndexChanged.connect(self.port)
 
+        # This creates another horizontal layout and adds it to the vertical layout
+        hbox_2 = QtWidgets.QHBoxLayout()
+        vbox.addLayout(hbox_2)
+
         # This creates and adds a button to the GUI, when pressed the method plot is activated
         plot_button =  QtWidgets.QPushButton("Plot")
-        vbox.addWidget(plot_button)
+        hbox_2.addWidget(plot_button)
         plot_button.clicked.connect(self.plot)
 
         # This creates and adds a button to the GUI, when pressed the method save is activated
         save_button = QtWidgets.QPushButton("save")
-        vbox.addWidget(save_button)
+        hbox_2.addWidget(save_button)
         save_button.clicked.connect(self.save_data)
 
         # This creates and adds a button to the GUI, when pressed the method clear is activated
         clear_button = QtWidgets.QPushButton("Clear")
-        vbox.addWidget(clear_button)
+        hbox_2.addWidget(clear_button)
         clear_button.clicked.connect(self.clear)
 
         # THis creates and adds a button to the GUI, when pressed the method close is activated
