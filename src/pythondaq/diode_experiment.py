@@ -1,6 +1,6 @@
 import numpy as np
 import statistics
-from pythondaq.arduino_device import ArduinoVISADevice, list_devices, identification
+from pythondaq.arduino_device import ArduinoVISADevice, list_devices, identification, close
 
 
 class DiodeExperiment():

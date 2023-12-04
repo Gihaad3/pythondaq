@@ -1,5 +1,5 @@
 import sys
-from pythondaq.diode_experiment import DiodeExperiment, list_devices
+from pythondaq.diode_experiment import DiodeExperiment, list_devices, close
 from PySide6 import QtWidgets
 from PySide6.QtCore import Slot
 import numpy as np
@@ -14,6 +14,7 @@ class UserInterface(QtWidgets.QMainWindow):
         """This method creates the lay-out of the GUI with vertical and horizontal layouts, and creates the buttons.
         """
 
+        # Calls the __init__() of the parent class
         super().__init__()
 
         # This creates a central- and plot widget and adds it to the vertical layout 
@@ -32,7 +33,7 @@ class UserInterface(QtWidgets.QMainWindow):
         hbox.addWidget(label_start)
 
         # This creates a button that can change the minimum voltage in volts trough the start method
-        start_button = QtWidgets.QDoubleSpinBox(minimum= 0, maximum=3.3, value =0)
+        start_button = QtWidgets.QDoubleSpinBox(minimum=0, maximum=3.3, value=0, singleStep=0.1)
         hbox.addWidget(start_button)
         start_button.valueChanged.connect(self.start)
 
@@ -41,7 +42,7 @@ class UserInterface(QtWidgets.QMainWindow):
         hbox.addWidget(label_stop)
 
         # This creates a button that can change the maximum voltage in volts trough the stop method
-        stop_button = QtWidgets.QDoubleSpinBox(minimum=0, maximum=3.3, value = 3.3)
+        stop_button = QtWidgets.QDoubleSpinBox(minimum=0, maximum=3.3, value=3.3, singleStep=0.1)
         hbox.addWidget(stop_button)
         stop_button.valueChanged.connect(self.stop)
 
@@ -50,7 +51,7 @@ class UserInterface(QtWidgets.QMainWindow):
         hbox.addWidget(label_repeat)
 
         # This creates a  button that can change the number of repeats through the repeat method
-        repeat_button = QtWidgets.QSpinBox(minimum = 1, value = 1)
+        repeat_button = QtWidgets.QSpinBox(minimum=1, value=1)
         hbox.addWidget(repeat_button)
         repeat_button.valueChanged.connect(self.repeat)
 
@@ -88,7 +89,7 @@ class UserInterface(QtWidgets.QMainWindow):
 
         # THis creates and adds a button to the GUI, when pressed the method close is activated
         quit_button = QtWidgets.QPushButton("Quit")
-        vbox.addWidget(quit_button)
+        hbox_2.addWidget(quit_button)
         quit_button.clicked.connect(self.close)
 
         # Minimum and maximum voltage in ADC units
@@ -127,8 +128,8 @@ class UserInterface(QtWidgets.QMainWindow):
         """        
         model = DiodeExperiment(port=self.ports)
         data = model.scan(min, max, N)
-        print(min, max)
-        
+        close()
+
         return data
     
 
@@ -157,13 +158,14 @@ class UserInterface(QtWidgets.QMainWindow):
     @Slot()
     def clear(self):
         """This method clears the plot widget
-        """ 
+        """
         self.plot_widget.clear()
+
 
     @Slot()
     def close(self):
         """This method closes the GUI
-        """        
+        """  
         quit()
 
 
@@ -222,7 +224,6 @@ class UserInterface(QtWidgets.QMainWindow):
             ports (string): The name of the chosen device
         """        
         self.ports = self.lists[ports]
-
 
 
 def main():

@@ -73,3 +73,8 @@ def identification(port):
         port, read_termination="\r\n", write_termination="\n"
     )
     return device.query("*IDN?")
+
+def close():
+    rm = pyvisa.ResourceManager("@py")
+    
+    return rm.close()
