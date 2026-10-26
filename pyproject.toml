@@ -16,6 +16,7 @@ click = "^8.1.7"
 pyside6 = "^6.6.0"
 pyqtgraph = "^0.13.3"
 pillow = ">=13.0.0,<14.0.0"
+fonttools = ">=4.60.2"
 
 
 [build-system]
